@@ -1,0 +1,48 @@
+:root {
+  /* Coolors Generator */
+  --color-primary: #f4afb4;
+  --color-primary-light: #fadbdd;
+  --color-secondary: #69995d;
+  --color-secondary-light: #a2c19a;
+
+  --color-dark: #211f1c;
+  --color-darker: #161513;
+  --color-light: #aaa49d;
+  --color-lighter: #d0ccc8;
+  --color-lightest: #ecebe9;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  /* 10px */
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--color-secondary);
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  height: 100vh;
+  overscroll-behavior-y: none;
+  overflow-y: hidden;
+
+  background-color: var(--color-primary-light);
+  display: flex;
+}
+
+section.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 20%;
+  background-color: var(--color-dark);
+}
+
+section.map {
+}
