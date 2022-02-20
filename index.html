@@ -11,7 +11,22 @@
       rel="stylesheet"
     />
 
+    <!-- leaflet interactive map -->
     <link rel="stylesheet" href="assets/stylesheet/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+      defer
+    ></script>
+    <!-- ****************** -->
+
     <script src="script.js" defer></script>
     <title>🐮CowDet🏃🏾‍♂️ ||📍 Map your Fitness Journey</title>
   </head>
@@ -19,7 +34,104 @@
   <body>
     <section class="sidebar">
       <img src="assets/images/logo.png" alt="Logo" class="logo" />
+
+      <ul class="workouts">
+        <form class="form hidden">
+          <div class="form__row">
+            <label class="form__label">Type</label>
+            <select class="form__input form__input--type">
+              <!--TODO: Add more exercise options -->
+              <option value="running">Running</option>
+            </select>
+          </div>
+          <div class="form__row">
+            <label class="form__label">Distance</label>
+            <input
+              class="form__input form__input--distance"
+              placeholder="miles"
+            />
+          </div>
+          <div class="form__row">
+            <label class="form__label">Duration</label>
+            <input
+              class="form__input form__input--duration"
+              placeholder="min"
+            />
+          </div>
+          <div class="form__row">
+            <label class="form__label">Cadence</label>
+            <input
+              class="form__input form__input--cadence"
+              placeholder="step/min"
+            />
+          </div>
+          <button class="form__btn">OK</button>
+        </form>
+
+        <li class="workout workout--running" data-id="1234567890">
+          <h2 class="workout__title">Running on January 1</h2>
+          <div class="workout__details">
+            <span class="workout__icon">🏃‍♂️</span>
+            <span class="workout__value">999</span>
+            <span class="workout__unit">miles</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⏱</span>
+            <span class="workout__value">24</span>
+            <span class="workout__unit">min</span>
+          </div>
+
+          <!--TODO: math function in JS to calculate this -->
+          <div class="workout__details">
+            <span class="workout__icon">⚡️</span>
+            <span class="workout__value">999</span>
+            <span class="workout__unit">miles/min</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">🦶🏼</span>
+            <span class="workout__value">178</span>
+            <span class="workout__unit">spm</span>
+          </div>
+        </li>
+
+        <li class="workout workout--running" data-id="1234567890">
+          <h2 class="workout__title">Running on January 2</h2>
+          <div class="workout__details">
+            <span class="workout__icon">🏃‍♂️</span>
+            <span class="workout__value">999</span>
+            <span class="workout__unit">miles</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⏱</span>
+            <span class="workout__value">24</span>
+            <span class="workout__unit">min</span>
+          </div>
+
+          <!--TODO: math function in JS to calculate this -->
+          <div class="workout__details">
+            <span class="workout__icon">⚡️</span>
+            <span class="workout__value">999</span>
+            <span class="workout__unit">mile/min</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">🦶🏼</span>
+            <span class="workout__value">178</span>
+            <span class="workout__unit">spm</span>
+          </div>
+        </li>
+      </ul>
+
+      <p class="copyright footer-links">
+        &copy;
+        <a
+          class="twitter-link"
+          target="_blank"
+          href="https://twitter.com/fepdev"
+          >Felix P. Built with 💙 in the Big 🍎</a
+        >
+        <!-- get icons for twitter and github -->
+      </p>
     </section>
-    <section class="map"></section>
+    <div id="map"></div>
   </body>
 </html>

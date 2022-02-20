@@ -35,8 +35,10 @@ body {
 
   background-color: var(--color-primary-light);
   display: flex;
+  flex-direction: row-reverse;
 }
 
+/*********** SIDEBAR SECTION ***********/
 section.sidebar {
   display: flex;
   flex-direction: column;
@@ -44,5 +46,36 @@ section.sidebar {
   background-color: var(--color-dark);
 }
 
-section.map {
+.logo {
+  width: 20rem;
+  align-self: center;
+  margin: 2rem 0 4rem 0;
+}
+.copyright {
+  margin-top: auto;
+  padding-bottom: 5rem;
+  font-size: 1.5rem;
+  text-align: center;
+  color: var(--color-primary);
+}
+
+.twitter-link:link,
+.twitter-link:visited {
+  color: var(--color-primary);
+  transition: all 0.2s;
+}
+
+.twitter-link:hover,
+.twitter-link:active {
+  color: var(--color-primary-light);
+}
+
+.twitter-link:hover,
+.twitter-link:active {
+  color: var(--color-primary-light);
+}
+
+#map {
+  flex: 1;
+  height: 100%;
 }
