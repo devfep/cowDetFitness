@@ -37,6 +37,7 @@ class Workout {
 }
 
 class Running extends Workout {
+  type = "running";
   constructor(coords, distance, duration, cadence) {
     super(coords, distance, duration);
     this.cadence = cadence;
@@ -56,6 +57,7 @@ class App {
   //  create private class fields
   #map;
   #mapEvent;
+  #workouts = [];
   constructor() {
     // Need to get geolocation as soon as obj is created
     this._getPosition();
@@ -102,26 +104,56 @@ class App {
   _newWorkout(e) {
     e.preventDefault();
 
+    // For Validation
+    //TODO: Get value from form inputs
+    const type = inputType.value;
+    const distance = +inputDistance.value;
+    const duration = +inputDuration.value;
+    const { lat, lng } = this.#mapEvent.latlng;
+    let workout;
+
+    //TODO: Check if data entered for Running is valid
+    if (type === "running") {
+      const cadence = +inputCadence.value; //running specific value
+      console.log(cadence);
+      if (
+        !Number.isFinite(distance) ||
+        !Number.isFinite(duration) ||
+        !Number.isFinite(cadence)
+      )
+        return alert("Input has to be a positive number");
+
+      // workout assignment based on exercise type
+      workout = new Running([lat, lng], distance, duration, cadence);
+    }
+    //TODO: If workout type is "running" create running Obj
+
+    //TODO: Render workout as marker on map
+    this.renderWorkoutMarker(workout);
+
+    //TODO: Add new object to workout array
+    this.#workouts.push(workout);
+
+    //TODO: Render workout on workout list
+
     // Clear input fields upon form submission
     inputDistance.value = inputDuration.value = inputCadence.value = "";
+  }
 
-    // Display marker upon form submission
-    const { lat, lng } = this.#mapEvent.latlng;
-
-    // Marker
-
-    L.marker([lat, lng])
+  // Marker
+  renderWorkoutMarker(workout) {
+    L.marker(workout.coords)
       .addTo(this.#map)
       .bindPopup(
         L.popup({
           autoClose: false,
           closeOnClick: false,
-          className: "popup",
+          className: `${workout.type}-popup`, //use css to style popup based on type
           maxWidth: 300,
           minWidth: 50,
         })
       )
-      .setPopupContent("Workout")
+      .setPopupContent(`${workout.type}`)
       .openPopup();
   }
 }
