@@ -51,6 +51,114 @@ section.sidebar {
   align-self: center;
   margin: 2rem 0 4rem 0;
 }
+.form {
+  background-color: var(--color-darker);
+  border-radius: 5px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.75rem;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 2.5rem;
+
+  /* Match height and activity boxes */
+  height: 9.25rem;
+  transition: all 0.5s, transform 1ms;
+}
+
+.form.hidden {
+  transform: translateY(-30rem);
+  height: 0;
+  padding: 0 2.25rem;
+  margin-bottom: 0;
+  opacity: 0;
+}
+
+.form__row {
+  display: flex;
+  align-items: center;
+}
+
+.form__row--hidden {
+  display: none;
+}
+
+.form__label {
+  flex: 0 0 40%;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.form__input {
+  width: 100%;
+  padding: 0.3rem 1.1rem;
+  font-family: inherit;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 3px;
+  background-color: var(--color-primary-light);
+  transition: all 0.2s;
+}
+
+.form__input:focus {
+  outline: none;
+  background-color: #fff;
+}
+
+/* No button needed for web version. Listen for return key */
+.form__btn {
+  display: none;
+}
+.workouts {
+  list-style: none;
+  height: 77vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.workout {
+  background-color: var(--color-darker);
+  border-radius: 5px;
+  padding: 1.5rem 2.25rem;
+  margin-bottom: 1.75rem;
+  cursor: pointer;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem 1rem;
+}
+.workout--running {
+  border-left: 5px solid var(--color-brand--2);
+}
+
+.workout__title {
+  font-size: 1.7rem;
+  font-weight: 600;
+  grid-column: 1 / -1;
+}
+
+.workout__details {
+  display: flex;
+  align-items: baseline;
+}
+
+.workout__icon {
+  font-size: 1.8rem;
+  margin-right: 0.2rem;
+  height: 0.28rem;
+}
+
+.workout__value {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.workout__unit {
+  font-size: 1.1rem;
+  color: var(--color-light--1);
+  text-transform: uppercase;
+  font-weight: 800;
+}
 .copyright {
   margin-top: auto;
   padding-bottom: 5rem;
@@ -75,6 +183,7 @@ section.sidebar {
   color: var(--color-primary-light);
 }
 
+/* MAP */
 #map {
   flex: 1;
   height: 100%;
