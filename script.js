@@ -24,62 +24,106 @@ const inputDuration = document.querySelector(".form__input--duration");
 const inputType = document.querySelector(".form__input--type");
 const form = document.querySelector(".form");
 
-// GLOBAL VARIABLES
-let map, mapEvent;
+class Workout {
+  date = new Date();
+  // generate ID from date(timestamp) for each workout
+  id = (Date.now() + "").slice(-10);
 
-// Get location
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      //   Obtain coordinates from navigator Obj
-      const { latitude, longitude } = position.coords;
-      console.log(latitude, longitude);
-      const coords = [latitude, longitude];
-
-      // Code from Leaflet Overview page || map.Js requires #map
-      map = L.map("map").setView([...coords], 17);
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
-
-      // handle map click events
-      map.on("click", (mapE) => {
-        mapEvent = mapE;
-        form.classList.remove("hidden");
-        inputDistance.focus();
-      });
-    },
-    () => {
-      alert("Please turn on your location");
-    }
-  );
+  constructor(coords, distance, duration) {
+    this.coords = coords; // [lat, lng]
+    this.distance = distance; // miles
+    this.duration = duration; // mins
+  }
 }
 
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
+class Running extends Workout {
+  constructor(coords, distance, duration, cadence) {
+    super(coords, distance, duration);
+    this.cadence = cadence;
+    this.calcPace();
+  }
 
-  // Clear input fields upon form submission
-  inputDistance.value = inputDuration.value = inputCadence.value = "";
+  calcPace() {
+    // min/mile
+    this.pace = this.duration / this.distance;
+    return this.pace;
+  }
+}
 
-  // Display marker upon form submission
-  console.log(mapEvent);
-  const { lat, lng } = mapEvent.latlng;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// OOP ARCHITECTURE
 
-  // Marker
+class App {
+  //  create private class fields
+  #map;
+  #mapEvent;
+  constructor() {
+    // Need to get geolocation as soon as obj is created
+    this._getPosition();
 
-  L.marker([lat, lng])
-    .addTo(map)
-    .bindPopup(
-      L.popup({
-        autoClose: false,
-        closeOnClick: false,
-        className: "popup",
-        maxWidth: 300,
-        minWidth: 50,
-      })
-    )
-    .setPopupContent("Workout")
-    .openPopup();
-});
+    form.addEventListener("submit", this._newWorkout.bind(this));
+  }
+
+  _getPosition() {
+    // Get location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        this._loadMap.bind(this),
+        function () {
+          alert("Please turn on your location");
+        }
+      );
+    }
+  }
+
+  _loadMap(position) {
+    //   Obtain coordinates from navigator Obj
+    const { latitude, longitude } = position.coords;
+    console.log(latitude, longitude);
+    const coords = [latitude, longitude];
+
+    // Code from Leaflet Overview page
+    this.#map = L.map("map").setView([...coords], 17);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(this.#map);
+
+    // handle map click events
+    this.#map.on("click", this._showForm.bind(this));
+  }
+
+  _showForm(mapE) {
+    this.#mapEvent = mapE;
+    form.classList.remove("hidden");
+    inputDistance.focus();
+  }
+
+  _newWorkout(e) {
+    e.preventDefault();
+
+    // Clear input fields upon form submission
+    inputDistance.value = inputDuration.value = inputCadence.value = "";
+
+    // Display marker upon form submission
+    const { lat, lng } = this.#mapEvent.latlng;
+
+    // Marker
+
+    L.marker([lat, lng])
+      .addTo(this.#map)
+      .bindPopup(
+        L.popup({
+          autoClose: false,
+          closeOnClick: false,
+          className: "popup",
+          maxWidth: 300,
+          minWidth: 50,
+        })
+      )
+      .setPopupContent("Workout")
+      .openPopup();
+  }
+}
+
+const app = new App();
