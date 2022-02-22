@@ -1,20 +1,5 @@
 "use strict";
 
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
 // DOM Element Selection
 
 const containerWorkouts = document.querySelector(".workouts");
@@ -34,6 +19,26 @@ class Workout {
     this.distance = distance; // miles
     this.duration = duration; // mins
   }
+
+  _setDescription() {
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${
+      months[this.date.getMonth()]
+    } ${this.date.getDate()}`;
+  }
 }
 
 class Running extends Workout {
@@ -42,6 +47,7 @@ class Running extends Workout {
     super(coords, distance, duration);
     this.cadence = cadence;
     this.calcPace();
+    this._setDescription();
   }
 
   calcPace() {
@@ -132,20 +138,19 @@ class App {
       this.#workouts.push(workout);
       console.log(workout);
     }
-    //TODO: Render workout as marker on map
-    this.renderWorkoutMarker(workout);
 
     //TODO: Add new object to workout array
     this.#workouts.push(workout);
 
-    //TODO: Render workout on workout list
+    //TODO: Render workout as marker on map
+    this._renderWorkoutMarker(workout);
 
-    // Clear input fields upon form submission
-    inputDistance.value = inputDuration.value = inputCadence.value = "";
+    //TODO: Render workout on workout list
+    this._renderWorkout(workout);
   }
 
   // Marker
-  renderWorkoutMarker(workout) {
+  _renderWorkoutMarker(workout) {
     L.marker(workout.coords)
       .addTo(this.#map)
       .bindPopup(
@@ -157,8 +162,44 @@ class App {
           minWidth: 50,
         })
       )
-      .setPopupContent(`workout`)
+      .setPopupContent(
+        `${workout.type === "running" ? "🏃‍♂️" : "❓"} ${workout.description}`
+      )
       .openPopup();
+  }
+
+  // DOM Manipulation
+  _renderWorkout(workout) {
+    let html = `
+        <li class="workout workout--${workout.type}" data-id="${workout.id}">
+          <h2 class="workout__title">${workout.description}</h2>
+          <div class="workout__details">
+            <span class="workout__icon"
+              >${workout.type === "running" ? "🏃‍♂️" : "❓"}</span
+            >
+            <span class="workout__value">${workout.distance}</span>
+            <span class="workout__unit">miles</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⏱</span>
+            <span class="workout__value">${workout.distance}</span>
+            <span class="workout__unit">min</span>
+          </div>
+
+          <!--TODO: math function in JS to calculate this -->
+          <div class="workout__details">
+            <span class="workout__icon">⚡️</span>
+            <span class="workout__value">${workout.pace.toFixed(1)}</span>
+            <span class="workout__unit">min/mile</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">🦶🏼</span>
+            <span class="workout__value">${workout.cadence}</span>
+            <span class="workout__unit">spm</span>
+          </div>
+        </li>
+    `;
+    form.insertAdjacentHTML("afterend", html);
   }
 }
 
