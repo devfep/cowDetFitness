@@ -113,21 +113,25 @@ class App {
     let workout;
 
     //TODO: Check if data entered for Running is valid
+    const validInputs = (...inputs) =>
+      inputs.every((input) => Number.isFinite(input));
+    const allPositive = (...inputs) => inputs.every((input) => input > 0);
+
     if (type === "running") {
       const cadence = +inputCadence.value; //running specific value
-      console.log(cadence);
+      console.log(distance, duration, cadence);
       if (
-        !Number.isFinite(distance) ||
-        !Number.isFinite(duration) ||
-        !Number.isFinite(cadence)
-      )
+        !validInputs(distance, duration, cadence) ||
+        !allPositive(distance, duration, cadence)
+      ) {
         return alert("Input has to be a positive number");
+      }
 
       // workout assignment based on exercise type
       workout = new Running([lat, lng], distance, duration, cadence);
+      this.#workouts.push(workout);
+      console.log(workout);
     }
-    //TODO: If workout type is "running" create running Obj
-
     //TODO: Render workout as marker on map
     this.renderWorkoutMarker(workout);
 
@@ -153,7 +157,7 @@ class App {
           minWidth: 50,
         })
       )
-      .setPopupContent(`${workout.type}`)
+      .setPopupContent(`workout`)
       .openPopup();
   }
 }
