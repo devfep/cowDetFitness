@@ -181,11 +181,6 @@ section.sidebar {
   color: var(--color-primary-light);
 }
 
-.footer {
-  align-content: center;
-  justify-content: center;
-}
-
 /* MAP */
 #map {
   flex: 1;

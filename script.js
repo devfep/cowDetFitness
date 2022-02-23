@@ -105,6 +105,15 @@ class App {
     this.#mapEvent = mapE;
     form.classList.remove("hidden");
     inputDistance.focus();
+    form.style.display = "grid";
+  }
+
+  _hideForm() {
+    // clear input
+    inputDistance.value = inputDuration.value = inputCadence.value = "";
+
+    form.classList.add("hidden");
+    form.style.display = "none";
   }
 
   _newWorkout(e) {
@@ -147,6 +156,9 @@ class App {
 
     //TODO: Render workout on workout list
     this._renderWorkout(workout);
+
+    // TODO: Clear input field and hide form
+    this._hideForm();
   }
 
   // Marker
