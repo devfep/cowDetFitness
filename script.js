@@ -67,8 +67,11 @@ class App {
   constructor() {
     // Need to get geolocation as soon as obj is created
     this._getPosition();
-
+    // event handlers
     form.addEventListener("submit", this._newWorkout.bind(this));
+
+    // retrieve data from local storage
+    this._getLocalStorage();
   }
 
   _getPosition() {
@@ -159,6 +162,8 @@ class App {
 
     // TODO: Clear input field and hide form
     this._hideForm();
+    // Persisting data of all workouts in local storage
+    this._setLocalStorage();
   }
 
   // Marker
@@ -212,6 +217,26 @@ class App {
         </li>
     `;
     form.insertAdjacentHTML("afterend", html);
+  }
+  _setLocalStorage() {
+    localStorage.setItem("workouts", JSON.stringify(this.#workouts));
+  }
+
+  _getLocalStorage() {
+    const data = JSON.parse(localStorage.getItem("workouts"));
+
+    if (!data) return;
+
+    this.#workouts = data;
+
+    this.#workouts.forEach((work) => {
+      this._renderWorkout(work);
+    });
+  }
+
+  reset() {
+    localStorage.removeItem("workouts");
+    location.reload();
   }
 }
 
